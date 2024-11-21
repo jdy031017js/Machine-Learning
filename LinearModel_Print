@@ -1,0 +1,51 @@
+Epoch [1/10]
+Train Loss: 0.96755, Train Accuracy: 73.418%
+Test Loss: 0.35461, Test Accuracy: 88.920%
+Correct Train: 44051/60000, Correct Test: 8892/10000
+
+Epoch [2/10]
+Train Loss: 0.28358, Train Accuracy: 91.543%
+Test Loss: 0.20218, Test Accuracy: 93.700%
+Correct Train: 54926/60000, Correct Test: 9370/10000
+
+Epoch [3/10]
+Train Loss: 0.18273, Train Accuracy: 94.560%
+Test Loss: 0.13470, Test Accuracy: 96.120%
+Correct Train: 56736/60000, Correct Test: 9612/10000
+
+Epoch [4/10]
+Train Loss: 0.13586, Train Accuracy: 95.957%
+Test Loss: 0.09934, Test Accuracy: 97.070%
+Correct Train: 57574/60000, Correct Test: 9707/10000
+
+Epoch [5/10]
+Train Loss: 0.11052, Train Accuracy: 96.700%
+Test Loss: 0.11839, Test Accuracy: 96.220%
+Correct Train: 58020/60000, Correct Test: 9622/10000
+
+Epoch [6/10]
+Train Loss: 0.09597, Train Accuracy: 97.012%
+Test Loss: 0.07748, Test Accuracy: 97.600%
+Correct Train: 58207/60000, Correct Test: 9760/10000
+
+Epoch [7/10]
+Train Loss: 0.08491, Train Accuracy: 97.427%
+Test Loss: 0.07018, Test Accuracy: 97.740%
+Correct Train: 58456/60000, Correct Test: 9774/10000
+
+Epoch [8/10]
+Train Loss: 0.07674, Train Accuracy: 97.605%
+Test Loss: 0.06594, Test Accuracy: 97.920%
+Correct Train: 58563/60000, Correct Test: 9792/10000
+
+Epoch [9/10]
+Train Loss: 0.07056, Train Accuracy: 97.783%
+Test Loss: 0.05878, Test Accuracy: 98.160%
+Correct Train: 58670/60000, Correct Test: 9816/10000
+
+Epoch [10/10]
+Train Loss: 0.06545, Train Accuracy: 97.923%
+Test Loss: 0.05071, Test Accuracy: 98.490%
+Correct Train: 58754/60000, Correct Test: 9849/10000
+
+20224309 컴퓨터공학과 전한나
