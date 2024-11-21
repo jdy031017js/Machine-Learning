@@ -1,0 +1,84 @@
+import torch
+import torch.nn as nn
+import torch.optim as optim
+from torch.utils.data import DataLoader
+import torchvision.datasets as datasets
+import torchvision.transforms as transforms
+
+# Device 설정 (GPU가 있으면 GPU 사용)
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
+# Create Fully Connected Network(완전 연결 신경망)
+class LinearModel_Han(nn.Module):
+    def __init__(self, input_size, num_classes):
+        super(LinearModel_Han, self).__init__()
+        self.fc1 = nn.Linear(input_size, num_classes)  # nn 모듈에서 제공하는 Linear Layer을 생성하는 함수
+
+    def forward(self, x):
+        # 2D 이미지를 1D 벡터(28x28 -> 784)로 펼치기
+        x = x.reshape(x.shape[0], -1)  # x.shape[0]: 텐서 x의 배치 크기, -1: 나머지 요소를 자동으로 계산
+        return self.fc1(x)
+
+# 손실 함수와 옵티마이저 정의
+loss_criterion = nn.CrossEntropyLoss()  # 손실 함수로 CrossEntropyLoss 사용
+
+# Data Load
+train_data = datasets.MNIST(root="C:/Users/jeonh/dataset/MNIST", train=True, transform=transforms.ToTensor(), download=True)
+test_data = datasets.MNIST(root="C:/Users/jeonh/dataset/MNIST", train=False, transform=transforms.ToTensor(), download=True)
+
+# DataLoader(데이터를 배치 단위로 나눔)
+train_loader = DataLoader(dataset=train_data, batch_size=64, shuffle=True)
+test_loader = DataLoader(dataset=test_data, batch_size=64, shuffle=False)
+
+# 정확도 및 성공 개수 계산 함수
+def check_accuracy(loader, model):
+    correct = 0
+    total = 0
+    model.eval()  # 평가 모드로 설정
+    with torch.no_grad():  # 그라디언트 계산 비활성화
+        for images, labels in loader:
+            images = images.to(device)
+            labels = labels.to(device)
+            outputs = model(images)  # 입력 데이터(images)를 모델에 통과시켜 예측값(outputs) 계산
+            _, predicted = outputs.max(1)  # 가장 높은 값의 인덱스를 예측 레이블로 사용
+            correct += (predicted == labels).sum().item()
+            total += labels.size(0)
+    accuracy = 100 * correct / total  # 정확도 계산
+    model.train()  # 모델을 다시 학습 모드로 설정
+    return correct, total, accuracy
+
+# Initialize neural network(모델 초기화)
+model = LinearModel_Han(input_size=784, num_classes=10).to(device)
+optimizer = optim.SGD(model.parameters(), lr=0.01)  # SGD사용, 학습률 0.01로 설정
+
+# 학습 루프
+epochs_Count = 10
+for epoch in range(epochs_Count):
+    total_loss = 0
+    for images, labels in train_loader:
+        images = images.to(device)
+        labels = labels.to(device)
+
+        # 순방향, 손실 계산(Forward)
+        outputs = model(images)  # 입력 데이터(images)를 모델에 통과시켜 예측값(outputs) 계산
+        loss = loss_criterion(outputs, labels)  # 손실 계산
+
+        # Backward and optimize(손실을 줄이기 위한 가중치와 그라디언트 조정)
+        optimizer.zero_grad()  # 그라디언트를 초기화
+        loss.backward()  # 역방향 전파로 그라디언트 계산
+        optimizer.step()  # 계산된 그라디언트 업데이트
+
+        total_loss += loss.item()
+
+   # 에폭마다 학습 데이터와 테스트 데이터의 정확도 및 손실 출력
+    train_correct, train_total, train_accuracy = check_accuracy(train_loader, model)
+    test_correct, test_total, test_accuracy = check_accuracy(test_loader, model)
+    
+    print(f'Epoch [{epoch+1}/{epochs_Count}]')
+    print(f'정확도 : {train_accuracy:.3f}%')  # 정확도를 소수점 셋째 자리까지 출력
+    print(f'손실값 : {total_loss/len(train_loader):.5f}')  # 손실 값을 소수점 다섯째 자리까지 출력
+    print(f'train : {train_correct} / {train_total} with accuracy {train_accuracy:.3f}%')
+    print(f'test  : {test_correct} / {test_total} with accuracy {test_accuracy:.3f}%\n')
+
+# 학번과 이름 출력
+print("20224309  컴퓨터공학과 전한나")
